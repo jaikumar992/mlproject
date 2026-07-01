@@ -2,7 +2,6 @@ from flask import Flask, request, render_template
 from src.pipeline.predict_pipeline import CustomData, PredictPipeline
 
 application = Flask(__name__)
-
 app = application
 
 
@@ -17,7 +16,7 @@ def predict_datapoint():
     if request.method == 'GET':
         return render_template('home.html')
 
-    else:
+    try:
         data = CustomData(
             gender=request.form.get('gender'),
             race_ethnicity=request.form.get('ethnicity'),
@@ -41,8 +40,12 @@ def predict_datapoint():
 
         return render_template(
             'home.html',
-            results=round(float(results[0]), 2)
+            results=str(results[0])
         )
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        return f"ERROR: {str(e)}"
 
 
 if __name__ == "__main__":
