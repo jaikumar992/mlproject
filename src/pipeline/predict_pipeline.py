@@ -9,45 +9,57 @@ class PredictPipeline:
     def __init__(self):
         pass
 
-    def predict(self,features):
+    def predict(self, features):
         try:
-            model_path=os.path.join("artifacts","model.pkl")
-            preprocessor_path=os.path.join('artifacts','preprocessor.pkl')
+            model_path = os.path.join("artifacts", "model.pkl")
+            preprocessor_path = os.path.join("artifacts", "preprocessor.pkl")
+
             print("Before Loading")
-            model=load_object(file_path=model_path)
-            preprocessor=load_object(file_path=preprocessor_path)
+
+            model = load_object(file_path=model_path)
+            preprocessor = load_object(file_path=preprocessor_path)
+
             print("After Loading")
-            data_scaled=preprocessor.transform(features)
-            preds=model.predict(data_scaled)
+
+            print("Input Features:")
+            print(features)
+
+            data_scaled = preprocessor.transform(features)
+
+            print("After Transform")
+            print(data_scaled)
+
+            preds = model.predict(data_scaled)
+
+            print("Prediction Success")
+            print(preds)
+
             return preds
-        
+
         except Exception as e:
-            raise CustomException(e,sys)
- 
+            print("ERROR OCCURRED:")
+            print(str(e))
+            raise CustomException(e, sys)
 
 
 class CustomData:
-    def __init__(  self,
+    def __init__(
+        self,
         gender: str,
         race_ethnicity: str,
         parental_level_of_education,
         lunch: str,
         test_preparation_course: str,
         reading_score: int,
-        writing_score: int):
+        writing_score: int
+    ):
 
         self.gender = gender
-
         self.race_ethnicity = race_ethnicity
-
         self.parental_level_of_education = parental_level_of_education
-
         self.lunch = lunch
-
         self.test_preparation_course = test_preparation_course
-
         self.reading_score = reading_score
-
         self.writing_score = writing_score
 
     def get_data_as_data_frame(self):
@@ -66,4 +78,3 @@ class CustomData:
 
         except Exception as e:
             raise CustomException(e, sys)
-
